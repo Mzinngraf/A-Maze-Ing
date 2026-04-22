@@ -1,5 +1,4 @@
 import random
-import sys
 
 class MazeGrid:
     def __init__(self, height, width):
@@ -23,10 +22,47 @@ class MazeGenerator:
 
     def generate(self):
         self.pattern()
+        start_y, start_x = self.entry
+        height = self.height
+        width = self.width
+        rando = random.Random(self.seed)
+        exit_x, exit_y = self.exit
+
+        stack = [(start_x, start_y)]
+        visited = {(start_x, start_y)}
+
+        directions = [
+            (0, -1, 1, 4),
+            (1, 0, 2, 8),
+            (0, 1, 4, 1),
+            (-1, 0, 8, 2)
+        ]
+        while stack:
+            curr_x, curr_y = stack[-1]
+            unvisited_walls = []
+            for dx, dy, wall_curr, wall_next in directions:
+                nx, ny = curr_x + dx, curr_y + dy
+                if 0 <= nx < width and 0 <= ny < height and (nx, ny) not in visited and (nx, ny) not in self.fortytwo:
+                    unvisited_walls.append((nx, ny, wall_curr, wall_next))
+            if unvisited_walls:
+                nx, ny, wall_curr, wall_next = rando.choice(unvisited_walls)
+                self.basegrid.cells[curr_y][curr_x] -= wall_curr
+                self.basegrid.cells[ny][nx] -= wall_next
+                visited.add((nx, ny))
+                stack.append((nx, ny))
+            else:
+                stack.pop()
+        if self.perfect is False:
+            rx = rando.randint(0, width - 2)
+            ry = rando.randint(0, height - 1)
+            if self.basegrid.cells[ry][rx] & 2:
+                self.basegrid.cells[ry][rx] -= 2
+                self.basegrid.cells[ry][rx + 1] -= 8
+        return self.basegrid.cells
 
 
     def pattern(self):
-        if self.height >= 9 and self.width >= 8:
+        if self.height >= 7 and self.width >= 9:
             fortytwopattern = [(0,0),(0,1),(0,2),(1,2),(2,2),(2,3),(2,4),(4,0),
                         (5,0),(6,0),(6,1),(4,2),(5,2),(6,2),(4,3),(4,4),(5,4),(6,4)]
             placed = []
@@ -48,10 +84,16 @@ class MazeGenerator:
 
 if __name__ == "__main__":
     gen = MazeGenerator(
-        width=21, height=21,
-        entry=(0,0), exit=(20,20),
+        width=20, height=20,
+        entry=(0,0), exit=(19,19),
         perfect=True, seed=42
     )
     gen.generate()
     for row in gen.basegrid.cells:
-        print(f"{row}\n")
+        print(f"{row}")
+        # for cell in row:
+        #     if cell == 16:
+        #         print("#", end=" ")
+        #     else:
+        #         print(".", end=" ")
+        # print()
