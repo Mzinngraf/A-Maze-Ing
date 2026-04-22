@@ -2,7 +2,7 @@ import sys
 
 
 def parser():
-    if len(sys.argv) < 2:
+    if len(sys.argv) != 2:
         print("usage: python3 a_maze_ing.py config.txt")
         sys.exit(1)
     filename = sys.argv[1]
@@ -20,11 +20,13 @@ def parser():
                     print(f"Error: invalid line format {x}")
                     sys.exit(1)
                 y = x.split("=")
-                key = y[0].strip()
+                key = y[0].strip().upper()
                 value = y[1].strip()
                 found_keys.append(key)
-
-                if key == "WIDTH":
+                if key == "SEED":
+                    val = int(value)
+                    data["seed"] = val
+                elif key == "WIDTH":
                     val = int(value)
                     if val < 3 or val > 50:
                         print("Width error")
@@ -38,18 +40,28 @@ def parser():
                     data["height"] = val
                 elif key == "ENTRY":
                     cordinate = value.split(",")
+                    if len(cordinate) != 2:
+                        print("Error : Entry must be a tuple (x,y)")
+                        sys.exit(1)
                     cordx = int(cordinate[0])
                     cordy = int(cordinate[1])
                     data["entry"] = (cordy, cordx)
                 elif key == "EXIT":
                     cordinate = value.split(",")
+                    if len(cordinate) != 2:
+                        print("Error : Exit must be a tuple (x,y)")
+                        sys.exit(1)
                     cordx = int(cordinate[0])
                     cordy = int(cordinate[1])
                     data["exit"] = (cordy, cordx)
                 elif key == "OUTPUT_FILE":
+                    if not value.lower().endswith(".txt"):
+                        print("Error OUTPUT_FILE must be a .txt file")
+                        sys.exit(1)
                     data["output"] = value
                 elif key == "PERFECT":
                     if y[1] != "False" and y[1] != "True":
+                        print(y[1])
                         print("Format error")
                         sys.exit(1)
                     data["perfect"] = (value == "True")
@@ -73,7 +85,6 @@ def parser():
         if data["entry"] == data["exit"]:
             print("Error : ENTRY and EXIT cannot be the same")
             sys.exit()
-        print(data)
         return data
     except FileNotFoundError:
         print("File not found")
