@@ -12,10 +12,10 @@ def gen_maze(self, grid):
     visited = {(start_x, start_y)}
 
     directions = [
-        (0, -1, 1, 4),
-        (1, 0, 2, 8),
-        (0, 1, 4, 1),
-        (-1, 0, 8, 2)
+        (0, -1, 1, 4),#N
+        (1, 0, 2, 8),#L
+        (0, 1, 4, 1),#S
+        (-1, 0, 8, 2)#O
     ]
 
     while stack:
