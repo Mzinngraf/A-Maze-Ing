@@ -1,13 +1,12 @@
 import random
 
 
-def gen_maze(self, grid):
-    start_y, start_x = self.entry
-    height = self.height
-    width = self.width
-    rando = random.Random(self.seed)
-    exit_x, exit_y = self.exit
-
+def gen_maze(generator):
+    height = generator.height
+    width = generator.width
+    rando = random.Random(generator.seed)
+    grid = generator.basegrid.cells
+    start_y, start_x = generator.entry
     stack = [(start_x, start_y)]
     visited = {(start_x, start_y)}
     grid = [height, width]

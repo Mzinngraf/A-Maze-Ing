@@ -26,6 +26,8 @@ def solve_maze(self, grid):
         for dx, dy, wall, wall_next in directions:
             nx, ny = curr_x + dx, curr_y + dy
             if 0 <= nx < width and 0 <= ny < height:
+                if grid[ny][nx] == 16:
+                    continue
                 if not (grid[curr_y][curr_x]) & wall and \
                      not (grid[ny][nx] & wall_next) and \
                         (nx, ny) not in visited:

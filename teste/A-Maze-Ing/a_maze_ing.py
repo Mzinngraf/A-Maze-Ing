@@ -18,13 +18,15 @@ if __name__ == "__main__":
         print("2. Show/Hide path from entry to exit")
         print("3. Rotate maze colors")
         print("4. Quit")
-        print(path)
         choice = input("Choice? (1-4): ")
         if choice == "1":
             seed += 1
             gen.seed = seed
             random.seed(seed)
-            gen.generate()
+            maze = gen.generate()
+            path = bfs.solve_maze(gen, maze)
+            display.maze = gen
+            display.path = path
         elif choice == "2":
             if display.show is False:
                 display.show = True

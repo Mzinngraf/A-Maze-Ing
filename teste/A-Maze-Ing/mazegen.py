@@ -21,6 +21,7 @@ class MazeGenerator:
 
 
     def generate(self):
+        self.basegrid = MazeGrid(self.height, self.width)
         self.pattern()
         start_y, start_x = self.entry
         height = self.height
