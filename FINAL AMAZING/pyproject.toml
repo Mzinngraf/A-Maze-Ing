@@ -1,0 +1,12 @@
+[tool.poetry]
+name = "mazegen"
+version = "0.1.5"
+description = ""
+authors = ["Marco Zinngraf mmourao-, <mmourao-@student42lisboa.com>", "Liza Melo Carrion limelo-c, <limelo-c@student42lisboa.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
